@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  dataBase:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=apimusic
+      - POSTGRES_DB=apimusic
+    ports:
+      - 3369:5432                                                   

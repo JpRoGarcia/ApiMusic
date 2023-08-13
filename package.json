@@ -1,0 +1,25 @@
+{
+  "name": "apimusic",
+  "version": "1.0.0",
+  "description": "una api para Pruebas Devops",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JpRoGarcia/ApiMusic.git"
+  },
+  "author": "JpRoGarcia",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JpRoGarcia/ApiMusic/issues"
+  },
+  "homepage": "https://github.com/JpRoGarcia/ApiMusic#readme",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "nodemon": "^3.0.1",
+    "pg": "^8.11.2"
+  }
+}
