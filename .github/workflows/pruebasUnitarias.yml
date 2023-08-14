@@ -1,0 +1,27 @@
+name: pruebas Unitarias
+
+on: 
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy: 
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout code
+  
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npx jest
