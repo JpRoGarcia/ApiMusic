@@ -14,8 +14,8 @@ const getAllArtists = async (req, res) => {
 const getArtistById = async (req, res) => {
   const artistId = req.params.id;
   try {
-    const query = 'SELECT * FROM artist WHERE id = $1';
-    const result = await db.execute(query, [artistId]);
+    const query = `SELECT * FROM artist WHERE id = '${artistId}'`;
+    const result = await db.execute(query);
     if (result.rows.length > 0) {
       res.json(result.rows[0]);
     } else {
@@ -27,13 +27,12 @@ const getArtistById = async (req, res) => {
 };
 
 const createArtist = async (req, res) => {
-  const { nombre, generomusica, nacimiento, paisorigen } = req.body;
-  try {
-    const query = 'INSERT INTO artist(nombre, generomusica, nacimiento, paisorigen) VALUES ($1, $2, $3, $4) RETURNING *';
-    const values = [nombre, generomusica, nacimiento, paisorigen];
-    const result = await db.execute(query, values);
-    res.status(201).json(result.rows[0]);
-  } catch (error) {
+    const {id, nombre, generomusica, nacimiento, paisorigen} = req.body;
+    try {
+      const query = `INSERT INTO artist(id, nombre, generomusica, nacimiento, paisorigen) VALUES('${id}', '${nombre}', '${generomusica}', '${nacimiento}', '${paisorigen}')`;
+      await db.execute(query);
+      res.status(201).json({ message: 'Artista creado exitosamente' });
+    } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
@@ -42,10 +41,9 @@ const updateArtist = async (req, res) => {
   const artistId = req.params.id;
   const { nombre, generomusica, nacimiento, paisorigen } = req.body;
   try {
-    const query = 'UPDATE artist SET nombre = $1, generomusica = $2, nacimiento = $3, paisorigen = $4 WHERE id = $5 RETURNING *';
-    const values = [nombre, generomusica, nacimiento, paisorigen, artistId];
-    const result = await db.execute(query, values);
-    res.json(result.rows[0]);
+    const query = `UPDATE artist SET nombre = '${nombre}', generomusica = '${generomusica}', nacimiento = '${nacimiento}' , paisorigen = '${paisorigen}' WHERE id = '${artistId}'`;
+    await db.execute(query);
+    res.status(201).json({ message: 'Artista Editado exitosamente' });
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
@@ -54,9 +52,9 @@ const updateArtist = async (req, res) => {
 const deleteArtist = async (req, res) => {
   const artistId = req.params.id;
   try {
-    const query = 'DELETE FROM artist WHERE id = $1';
-    await db.execute(query, [artistId]);
-    res.sendStatus(204);
+    const query = `DELETE FROM artist WHERE id = '${artistId}';`;
+    await db.execute(query);
+    res.status(204).json({ message: 'Artista Eliminado exitosamente' });
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
@@ -69,8 +67,3 @@ module.exports = {
   updateArtist,
   deleteArtist,
 };
-
-
-
-
-

@@ -14,8 +14,8 @@ const getAllAlbums = async (req, res) => {
 const getAlbumById = async (req, res) => {
   const albumId = req.params.id;
   try {
-    const query = 'SELECT * FROM album WHERE id = $1';
-    const result = await db.execute(query, [albumId]);
+    const query = `SELECT * FROM album WHERE id = '${albumId}'`;
+    const result = await db.execute(query);
     if (result.rows.length > 0) {
       res.json(result.rows[0]);
     } else {
@@ -25,38 +25,34 @@ const getAlbumById = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
-
 const createAlbum = async (req, res) => {
-  const { idartista, nombre, lanzamiento, sellodiscografico } = req.body;
+  const { id, idartista, nombre, lanzamiento, sellodiscografico } = req.body;
   try {
-    const query = 'INSERT INTO album(idartista, nombre, lanzamiento, sellodiscografico) VALUES ($1, $2, $3, $4) RETURNING *';
-    const values = [idartista, nombre, lanzamiento, sellodiscografico];
-    const result = await db.execute(query, values);
-    res.status(201).json(result.rows[0]);
+    const query = `INSERT INTO album(id, idartista, nombre, lanzamiento, sellodiscografico) VALUES('${id}', '${idartista}', '${nombre}', '${lanzamiento}', '${sellodiscografico}')`;
+
+    await db.execute(query);
+    res.status(201).json({ message: 'Album creado exitosamente' });
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
-
 const updateAlbum = async (req, res) => {
   const albumId = req.params.id;
   const { idartista, nombre, lanzamiento, sellodiscografico } = req.body;
   try {
-    const query = 'UPDATE album SET idartista = $1, nombre = $2, lanzamiento = $3, sellodiscografico = $4 WHERE id = $5 RETURNING *';
-    const values = [idartista, nombre, lanzamiento, sellodiscografico, albumId];
-    const result = await db.execute(query, values);
-    res.json(result.rows[0]);
+    const query = `UPDATE album SET idartista = '${idartista}', nombre = '${nombre}', lanzamiento = '${lanzamiento}' , sellodiscografico = '${sellodiscografico}' WHERE id = '${albumId}'`;
+    await db.execute(query);
+    res.status(201).json({ message: 'Album Editado exitosamente' });
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
-
 const deleteAlbum = async (req, res) => {
   const albumId = req.params.id;
   try {
-    const query = 'DELETE FROM album WHERE id = $1';
-    await db.execute(query, [albumId]);
-    res.sendStatus(204);
+    const query = `DELETE FROM album WHERE id = '${albumId}';`;
+    await db.execute(query);
+    res.status(204).json({ message: 'Album Eliminado exitosamente' });
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
