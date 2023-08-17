@@ -7,4 +7,6 @@ services:
       - POSTGRES_PASSWORD=apimusic
       - POSTGRES_DB=apimusic
     ports:
-      - 3369:5432                                                   
+      - 3369:5432
+    volumes:
+      - ./sql-scripts:/docker-entrypoint-initdb.d                                
