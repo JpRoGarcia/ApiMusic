@@ -78,7 +78,7 @@ describe('updateAlbum', () => {
     await updateAlbum(req, res);
 
     expect(db.execute).toHaveBeenCalledWith(expect.stringContaining('UPDATE album SET'));
-    expect(res.status).toHaveBeenCalledWith(201);
+    expect(res.status).toHaveBeenCalledWith(300);
     expect(res.json).toHaveBeenCalledWith({ message: 'Album Editado exitosamente' });
   });
 });
