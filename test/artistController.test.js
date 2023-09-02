@@ -1,5 +1,5 @@
 const {getAllArtists,  getArtistById, createArtist, updateArtist, deleteArtist} = require('../src/controllers/artistController');
-const db = require('../services/db');
+const db = require('../src/services/db');
 
 jest.mock('../src/services/db');
 
