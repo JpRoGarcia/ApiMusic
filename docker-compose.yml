@@ -9,4 +9,11 @@ services:
     ports:
       - 3369:5432
     volumes:
-      - ./sql-scripts:/docker-entrypoint-initdb.d                                
+      - ./sql-scripts:/docker-entrypoint-initdb.d        
+
+  app:
+    build: .
+    ports:
+      - 3000:3000  # Ajusta el puerto según las necesidades de tu aplicación
+    depends_on:
+      - dataBase                        
