@@ -1,7 +1,7 @@
-const {getAllArtists,  getArtistById, createArtist, updateArtist, deleteArtist} = require('../controllers/artistController');
+const {getAllArtists,  getArtistById, createArtist, updateArtist, deleteArtist} = require('../src/controllers/artistController');
 const db = require('../services/db');
 
-jest.mock('../services/db');
+jest.mock('../src/services/db');
 
 describe('getArtistById', () => {
   test('should get an artist by ID', async () => {
