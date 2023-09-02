@@ -1,6 +1,6 @@
 // routes/albumRoutes.js
 const express = require('express');
-const albumController = require('../../controllers/albumController');
+const albumController = require('../controllers/albumController');
 
 const router = express.Router();
 
