@@ -1,7 +1,7 @@
-const {getAllAlbums,  getAlbumById, createAlbum, updateAlbum, deleteAlbum} = require('../src/controllers/albumController');
-const db = require('../src/services/db');
+const {getAllAlbums,  getAlbumById, createAlbum, updateAlbum, deleteAlbum} = require('../controllers/albumController');
+const db = require('../services/db');
 
-jest.mock('../src/services/db');
+jest.mock('../services/db');
 
 describe('getAlbumById', () => {
   test('should get an album by ID', async () => {
