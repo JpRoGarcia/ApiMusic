@@ -4,10 +4,10 @@ const pg = require("pg");
 const execute = async (sql) => {
     const client = new pg.Client({
         user: 'postgres',
-        host: 'localhost',
+        host: 'dataBase',
         database: 'apimusic',
         password: 'apimusic',
-        port: 3369,
+        port: 5432,
       });
 
     await client.connect();
