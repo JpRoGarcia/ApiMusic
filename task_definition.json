@@ -1,5 +1,5 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:us-west-2:208540786753:task-definition/apimusic:1",
+    "taskDefinitionArn": "arn:aws:ecs:us-west-2:208540786753:task-definition/apimusic-app:1",
     "containerDefinitions": [
         {
             "name": "apimusic",
@@ -24,7 +24,7 @@
                 "logDriver": "awslogs",
                 "options": {
                     "awslogs-create-group": "true",
-                    "awslogs-group": "/ecs/apimusic",
+                    "awslogs-group": "/ecs/apimusic-app",
                     "awslogs-region": "us-west-2",
                     "awslogs-stream-prefix": "ecs"
                 },
@@ -32,7 +32,7 @@
             }
         }
     ],
-    "family": "apimusic",
+    "family": "apimusic-app",
     "executionRoleArn": "arn:aws:iam::208540786753:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
     "revision": 1,
@@ -66,18 +66,19 @@
     ],
     "placementConstraints": [],
     "compatibilities": [
-        "EC2"
+        "EC2",
+        "FARGATE"
     ],
     "requiresCompatibilities": [
         "EC2"
     ],
     "cpu": "1024",
-    "memory": "1024",
+    "memory": "3072",
     "runtimePlatform": {
-        "cpuArchitecture": "X86_64",
+        "cpuArchitecture": "ARM64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2023-09-05T05:06:00.098Z",
+    "registeredAt": "2023-09-05T05:39:45.743Z",
     "registeredBy": "arn:aws:iam::208540786753:root",
     "tags": []
 }
