@@ -12,9 +12,7 @@ services:
       - ./sql-scripts:/docker-entrypoint-initdb.d        
 
   app:
-    build: .
-    depends_on:
-      - dataBase 
+    build: . 
     links:
       - dataBase
     ports:
