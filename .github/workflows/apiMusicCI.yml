@@ -40,6 +40,7 @@ jobs:
       - name: Build Docker image
         run: |
           docker-compose build
+          docker-compose images
 
       - name: Login to DockerHub
         uses: docker/login-action@v2
