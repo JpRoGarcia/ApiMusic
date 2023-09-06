@@ -13,9 +13,12 @@ services:
 
   app:
     build: .
+    depends_on:
+      - dataBase
+    links:
+      - dataBase
     ports:
       - 3000:3000
-    depends_on:
-      - database
+
       # Ajusta el puerto según las necesidades de tu aplicación
                        
