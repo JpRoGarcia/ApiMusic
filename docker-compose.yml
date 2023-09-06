@@ -14,5 +14,8 @@ services:
   app:
     build: .
     ports:
-      - 3000:3000  # Ajusta el puerto según las necesidades de tu aplicación
+      - 3000:3000
+    depends_on:
+      - database
+      # Ajusta el puerto según las necesidades de tu aplicación
                        
