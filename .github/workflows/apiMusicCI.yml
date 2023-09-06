@@ -37,7 +37,7 @@ jobs:
         uses: docker/setup-docker@v2
 
       - name: Build Docker images
-        uses: docker/compose@v3
+        uses: docker/compose@v1
         with:
           compose-file: ./docker-compose.yml
           services:
