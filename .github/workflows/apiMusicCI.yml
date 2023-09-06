@@ -33,8 +33,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Install Docker Compose
-        uses: docker/setup-docker@v2
+      - name: Install Docker
+        uses: docker/install@v2
 
       - name: Build Docker images
         run: docker-compose build
