@@ -10,6 +10,10 @@ app.use(express.json());
 app.use('/api', artistRoutes);
 app.use('/api', albumRoutes);
 
+app.get('/', function (req, res) {
+  res.send('(: API de Artistas Y Album :)');
+})
+
 
 const PORT = process.env.PORT || 3000;
 
