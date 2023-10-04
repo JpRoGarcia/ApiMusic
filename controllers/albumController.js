@@ -1,5 +1,6 @@
 // controllers/albumController.js
-const db = require('../services/db'); // Ruta correcta al archivo db.js
+const db = require('../services/db'); 
+const traductor = require('./traductorController'); // Ruta correcta al archivo db.js
 
 const getAllAlbums = async (req, res) => {
   try {
@@ -10,6 +11,20 @@ const getAllAlbums = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+const getAllAlbumsEN = async (req, res) => {
+  try {
+    const query = 'SELECT * FROM album';
+    const result = await db.execute(query);
+
+    const albumsTraducidos = await traductor.traducirJson(result.rows);
+
+    res.json(albumsTraducidos);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 
 const getAlbumById = async (req, res) => {
   const albumId = req.params.id;
@@ -60,6 +75,7 @@ const deleteAlbum = async (req, res) => {
 
 module.exports = {
   getAllAlbums,
+  getAllAlbumsEN,
   getAlbumById,
   createAlbum,
   updateAlbum,

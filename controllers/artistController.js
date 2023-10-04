@@ -1,11 +1,25 @@
 
-const db = require('../services/db'); // Ruta correcta al archivo db.js
+const db = require('../services/db');
+const traductor = require('./traductorController'); // Ruta correcta al archivo db.js
 
 const getAllArtists = async (req, res) => {
   try {
     const query = 'SELECT * FROM artist';
     const result = await db.execute(query);
     res.json(result.rows);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+const getAllArtistsEN = async (req, res) => {
+  try {
+    const query = 'SELECT * FROM artist';
+    const result = await db.execute(query);
+
+    const artistsTraducidos = await traductor.traducirJson(result.rows);
+
+    res.json(artistsTraducidos);
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
@@ -62,6 +76,7 @@ const deleteArtist = async (req, res) => {
 
 module.exports = {
   getAllArtists,
+  getAllArtistsEN,
   getArtistById,
   createArtist,
   updateArtist,
