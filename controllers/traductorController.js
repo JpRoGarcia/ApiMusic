@@ -37,18 +37,22 @@ async function traducirAIngles(texto) {
 async function traducirCamposTexto(objeto) {
     const camposTraducidos = {};
 
-    for (const clave in objeto) {
-        if (typeof objeto[clave] === 'string') {
-            camposTraducidos[clave] = await traducirAIngles(objeto[clave]);
-        } else {
-            camposTraducidos[clave] = objeto[clave];
-        }
-    }
+    // Usamos Promise.all para traducir todos los campos de texto de forma paralela
+    const traducciones = await Promise.all(
+        Object.entries(objeto).map(async ([clave, valor]) => {
+            if (typeof valor === 'string') {
+                camposTraducidos[clave] = await traducirAIngles(valor);
+            } else {
+                camposTraducidos[clave] = valor;
+            }
+        })
+    );
 
     return camposTraducidos;
 }
 
 async function traducirJson(json) {
+    // Usamos Promise.all para traducir todos los objetos del JSON de forma paralela
     const jsonTraducido = await Promise.all(json.map(async (objeto) => {
         const camposTraducidos = await traducirCamposTexto(objeto);
         return camposTraducidos;
