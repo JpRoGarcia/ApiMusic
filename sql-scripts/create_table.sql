@@ -16,11 +16,11 @@ CREATE TABLE artist (
 
 INSERT INTO album
 (id, idartista, nombre, lanzamiento, sellodiscografico)
-VALUES(1, 2, 'Como le Digo', '2022-05-05', 'Music');
+VALUES(1, 2, 'reloj', '2022-05-05', 'Sonido Vibra Discos');
 
 INSERT INTO album
 (id, idartista, nombre, lanzamiento, sellodiscografico)
-VALUES(2, 1, 'Givenchi', '2022-05-05', 'Music');
+VALUES(2, 1, 'dos por dos son cuatro', '2022-05-05', 'Discotecas Fuentes');
 
 INSERT INTO artist
 (id, nombre, generomusica, nacimiento, paisorigen)

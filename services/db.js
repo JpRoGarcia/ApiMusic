@@ -3,11 +3,15 @@ const pg = require("pg");
 //Conexion con Base de Datos 
 const execute = async (sql) => {
     const client = new pg.Client({
-        user: 'postgres',
-        host: 'appmusic.cdk5irdeokab.us-east-1.rds.amazonaws.com',
-        database: 'appmusic',
-        password: 'apimusic',
-        port: 5432,
+      max: 300,
+      connectionTimeoutMillis: 5000,
+    
+      host: 'c-cluster-api-music.exjg3sujbtld6v.postgres.cosmos.azure.com',
+      port: 5432,
+      user: 'citus',
+      password: '@p1Mus1c',
+      database: 'data-api-music',
+      ssl: true,
       });
 
     await client.connect((err) => {
@@ -23,3 +27,5 @@ const execute = async (sql) => {
 };
 
 module.exports = { execute };
+
+
