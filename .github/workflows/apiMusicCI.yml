@@ -64,7 +64,7 @@ jobs:
       - name: checkeout
         uses: actions/checkout@v2
       - name: setup Terraform
-        uses: hashipcorp/setup-terraform@v2
+        uses: hashicorp/setup-terraform@v1
         with:
           terraform_wrapper: false
       - name: Terraform init
