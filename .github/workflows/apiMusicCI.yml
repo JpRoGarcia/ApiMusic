@@ -5,6 +5,14 @@ on:
     branches:
       - main
 
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID}}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  TF_STATE_SUCKET_NAME: ${{ secrets.TF_STATE_SUCKET_NAME }}
+  PRIVATE_SSH_KEY: ${{ secrets.PRIVATE_SSH_KEY }}
+  PUBLIC_SSH_KEY: ${{ secrets.PUBLIC_SSH_KEY }}
+  AWS_REGION: us-east-1 
+
 jobs:
   unitest:
     runs-on: ubuntu-latest
@@ -24,7 +32,6 @@ jobs:
 
       - name: Run tests
         run: npm test
-
 
   build:
     needs: unitest
@@ -49,5 +56,34 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/appmusic:latest
+
+  deploy-infra:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkeout
+        uses: actions/checkout@v2
+      - name: setup Terraform
+        uses: hashipcorp/setup-terraform@v2
+        with:
+          terraform_wrapper: false
+      - name: Terraform init
+        id: init
+        run: terraform init -backend-config="bucket=$TF_STATE_BUCKET_NAME" =backend-config+"region=us-east-1"
+        working-directory: ./terraform
+      - name: Terraform plan
+        id: plan
+        run: |-
+          terraform plan \
+          -var="region=us-east-1" \
+          -var="public_key=$PUBLIC_SSH_KEY" \
+          -var="private_key=$PRIVATE_SSH_KEY" \
+          -var="key_name=deployer-key" \
+          -out=PLAN
+        working-directory: ./terraform
+      - name: Terraform Apply
+        id: applu
+        run: terraform apply PLAN
+        working-directory: ./terraform
 
   
