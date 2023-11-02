@@ -8,9 +8,9 @@ on:
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID}}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  TF_STATE_SUCKET_NAME: ${{ secrets.TF_STATE_SUCKET_NAME }}
-  PRIVATE_SSH_KEY: ${{ secrets.PRIVATE_SSH_KEY }}
-  PUBLIC_SSH_KEY: ${{ secrets.PUBLIC_SSH_KEY }}
+  TF_STATE_SUCKET_NAME: ${{ secrets.AWS_TF_STATE_BUCKET_NAME }}
+  PRIVATE_SSH_KEY: ${{ secrets.AWS_SSH_KEY_PRIVATE }}
+  PUBLIC_SSH_KEY: ${{ secrets.AWS_SSH_KEY_PUBLIC }}
   AWS_REGION: us-east-1 
 
 jobs:
@@ -57,11 +57,11 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/appmusic:latest
 
-  deploy-infra:
+  deploy-terraform:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: checkeout
+      - name: Checkout
         uses: actions/checkout@v2
       - name: setup Terraform
         uses: hashicorp/setup-terraform@v1
@@ -71,7 +71,7 @@ jobs:
         id: init
         run: terraform init -backend-config="bucket=$TF_STATE_BUCKET_NAME" -backend-config="region=us-east-1"
         working-directory: ./terraform
-      - name: Terraform plan
+      - name: Terraform Plan
         id: plan
         run: |-
           terraform plan \
