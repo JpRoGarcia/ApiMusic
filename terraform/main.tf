@@ -34,7 +34,7 @@ resource "aws_instance" "server" {
 
 resource "aws_iam_instance_profile" "ec2-profile" {
   name = "ec2-profile"
-  role = "EC2-ECR-AUTH"
+  role = "EC2-ECR-AUTH" 
 }
 
 resource "aws_security_group" "maingroup" {
