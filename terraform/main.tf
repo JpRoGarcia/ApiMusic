@@ -85,3 +85,30 @@ output "instance_public_ip" {
   value     = aws_instance.servernode.public_ip
   sensitive = true
 }
+
+resource "aws_iam_policy" "s3_policy" {
+  name        = "MyS3AccessPolicy"
+  description = "Policy for accessing my S3 bucket"
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = "s3:ListBucket",
+        Resource = "arn:aws:s3:::mybucket"
+      },
+      {
+        Effect   = "Allow",
+        Action   = ["s3:GetObject", "s3:PutObject", "s3:DeleteObject"],
+        Resource = "arn:aws:s3:::mybucket/path/to/my/key"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy_attachment" "attach_s3_policy" {
+  name       = "attach-s3-policy"
+  policy_arn = aws_iam_policy.s3_policy.arn
+  roles      = [aws_iam_instance_profile.ec2-profile.name]
+}
+
