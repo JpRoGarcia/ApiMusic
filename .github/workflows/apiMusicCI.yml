@@ -107,11 +107,11 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           username: ubuntu
-          key: $PRIVATE_SSH_KEY
+          key: ${{ secrets.AWS_SSH_KEY_PRIVATE }}
           host: ${{ env.SERVER_PUBLIC_IP }}  # Make sure this is set in your secrets
           script: |
             echo "SSH_HOST: ${{ env.SERVER_PUBLIC_IP }}"
-            echo "SSH_PRIVATE_KEY: $PRIVATE_SSH_KEY
+            echo "SSH_PRIVATE_KEY: ${{ secrets.AWS_SSH_KEY_PRIVATE }}
             sudo apt update
             sudo apt install docker.io -y
             docker pull jprogarcia/appmusic:latest
