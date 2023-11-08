@@ -94,12 +94,12 @@ jobs:
         working-directory: ./terraform
 
   deploy:
+    needs: terraform
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-        
+
       - name: Set Ip env Variable
         run: echo SERVER_PUBLIC_IP=${{ needs.deploy-infra.outputs.SERVER_PUBLIC_DNS }} >> $GITHUB_ENV
 
