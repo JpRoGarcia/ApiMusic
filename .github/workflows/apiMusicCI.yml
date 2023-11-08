@@ -59,6 +59,8 @@ jobs:
 
   terraform:
     runs-on: ubuntu-latest
+    outputs:
+      SERVER_PUBLIC_IP: ${{ steps.set-ip.outputs.instance_public_ip }}
     steps:
       - name: checkout repo
         uses: actions/checkout@v2
@@ -85,7 +87,30 @@ jobs:
         id: apply
         run: terraform apply PLAN
         working-directory: ./terraform
+      - name: Set output
+        id: set-ip
+        run: |-
+            echo "::set-output name=instance_public_ip::$(terraform output instance_public_ip)"
+        working-directory: ./terraform
 
+      - name: Deploy Docker Image to EC2
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: example-node-app
+          IMAGE_TAG: ${{ github.sha }}
+          AWS_DEFAULT_REGION: us-east-1
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ env.SERVER_PUBLIC_IP }}
+          username: ubuntu
+          key: ${{ env.PRIVATE_SSH_KEY }}
+          envs: PRIVATE_SSH_KEY,REGISTRY,REPOSITORY,IMAGE_TAG,AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,AWS_REGION
+          script: |-
+            sudo apt update
+            sudo apt install docker.io -y
+            docker pull jprogarcia/appmusic:latest
+            sudo docker pull jprogarcia/appmusic:latest
+            sudo docker run -d -p 80:80 jprogarcia/appmusic:latest
 
 
   
