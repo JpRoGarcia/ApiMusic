@@ -86,3 +86,39 @@ output "instance_public_ip" {
   sensitive = true
 }
 
+
+#RBS
+resource "aws_rds_instance" "my_rds_instance" {
+  engine = "postgres"
+  instance_class = "db.t2.micro"
+  database_name = "ApiMusicData"
+  username = "ApiMusicUser"
+  password = "ApiMusicPassword"
+  allocated_storage = 5
+  storage_type = "gp2"
+  publicly_accessible = true
+}
+
+resource "aws_security_group" "my_rds_security_group" {
+  name = "my_rds_security_group"
+  description = "Security group for PostgreSQL instance"
+  vpc_id = aws_vpc.main.id
+
+  ingress {
+    description = "Allow PostgreSQL connections from EC2 instances"
+    from_port = 5432
+    to_port = 5432
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_db_instance_parameter_group" "my_db_parameter_group" {
+  name = "my_db_parameter_group"
+  family = "postgres12"
+
+  parameter {
+    name = "rds.force_ssl"
+    value = "1"
+  }
+}
