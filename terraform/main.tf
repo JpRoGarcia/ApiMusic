@@ -143,12 +143,12 @@ resource "aws_db_subnet_group" "database_subnet_group" {
 # create the rds instance
 resource "aws_db_instance" "db_instance" {
   engine                  = "postgres"
-  engine_version          = "15.3"
+  engine_version          = "15.3-R2"
   multi_az                = false
   identifier              = "dev-rds-instance"
   username                = "ApiMusicUser"
   password                = "ApiMusicPassword"
-  instance_class          = "db.t2.micro"
+  instance_class          = "db.t3.micro"
   allocated_storage       = 200
   db_subnet_group_name    = aws_db_subnet_group.database_subnet_group.name
   vpc_security_group_ids  = [aws_security_group.database_security_group.id]
