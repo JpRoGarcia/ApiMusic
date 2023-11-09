@@ -6,11 +6,11 @@ const execute = async (sql) => {
       max: 300,
       connectionTimeoutMillis: 5000,
     
-      host: 'c-cluster-api-music.exjg3sujbtld6v.postgres.cosmos.azure.com',
+      host: 'dev-rds-instance.cpb0e26kno9k.us-east-1.rds.amazonaws.com',
       port: 5432,
-      user: 'citus',
-      password: '@p1Mus1c',
-      database: 'data-api-music',
+      user: 'ApiMusicUser',
+      password: 'ApiMusicPassword',
+      database: 'ApiMusicData',
       ssl: true,
       });
 

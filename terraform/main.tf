@@ -153,8 +153,13 @@ resource "aws_db_instance" "db_instance" {
   db_subnet_group_name    = aws_db_subnet_group.database_subnet_group.name
   vpc_security_group_ids  = [aws_security_group.database_security_group.id]
   availability_zone       = data.aws_availability_zones.available_zones.names[0]
-  db_name                 = "ApiMusicData"
+  db_name                 = " "
   skip_final_snapshot     = true
+
+    # Cargar SQL después de crear la instancia
+  provisioner "local-exec" {
+    command = "psql -h ${aws_db_instance.db_instance.address} -U ${aws_db_instance.db_instance.username} -p ${aws_db_instance.db_instance.port} -d ${aws_db_instance.db_instance.name} < create_table.sql"
+  }
 }
 
 
