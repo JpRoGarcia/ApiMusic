@@ -131,7 +131,7 @@ resource "aws_security_group" "database_security_group" {
 # create the subnet group for the rds instance
 resource "aws_db_subnet_group" "database_subnet_group" {
   name         = "database-subnets"
-  subnet_ids   = [aws_default_subnet.subnet_az1.id, aws_default_subnet.subnet_az1.id]
+  subnet_ids   = [aws_default_subnet.subnet_az1.id, aws_default_subnet.subnet_az2.id]
   description  = "Subnets for database instances"
 
   tags   = {
