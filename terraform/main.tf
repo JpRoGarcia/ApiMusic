@@ -88,37 +88,74 @@ output "instance_public_ip" {
 
 
 #RBS
-resource "aws_rds_instance" "my_rds_instance" {
-  engine = "postgres"
-  instance_class = "db.t2.micro"
-  database_name = "ApiMusicData"
-  username = "ApiMusicUser"
-  password = "ApiMusicPassword"
-  allocated_storage = 5
-  storage_type = "gp2"
-  publicly_accessible = true
+# use data source to get all avalablility zones in region
+data "aws_availability_zones" "available_zones" {}
+
+
+# create a default subnet in the first az if one does not exit
+resource "aws_default_subnet" "subnet_az1" {
+  availability_zone = data.aws_availability_zones.available_zones.names[0]
 }
 
-resource "aws_security_group" "my_rds_security_group" {
-  name = "my_rds_security_group"
-  description = "Security group for PostgreSQL instance"
-  vpc_id = aws_vpc.main.id
+# create a default subnet in the second az if one does not exit
+resource "aws_default_subnet" "subnet_az2" {
+  availability_zone = data.aws_availability_zones.available_zones.names[1]
+}
+
+# create security group for the database
+resource "aws_security_group" "database_security_group" {
+  name        = "database security group"
+  description = "enable mysql/aurora access on port 3306"
 
   ingress {
     description = "Allow PostgreSQL connections from EC2 instances"
     from_port = 5432
     to_port = 5432
     protocol = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    security_groups = [aws_security_group.maingroup.id]
+  }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = -1
+    cidr_blocks      = ["0.0.0.0/0", ]
+  }
+
+  tags   = {
+    Name = "database security group"
   }
 }
 
-resource "aws_db_instance_parameter_group" "my_db_parameter_group" {
-  name = "my_db_parameter_group"
-  family = "postgres12"
 
-  parameter {
-    name = "rds.force_ssl"
-    value = "1"
+# create the subnet group for the rds instance
+resource "aws_db_subnet_group" "database_subnet_group" {
+  name         = "database-subnets"
+  subnet_ids   = [aws_default_subnet.subnet_az1.id, aws_default_subnet.subnet_az1.id]
+  description  = "Subnets for database instances"
+
+  tags   = {
+    Name = "database-subnets"
   }
 }
+
+
+# create the rds instance
+resource "aws_db_instance" "db_instance" {
+  engine                  = "postgres"
+  engine_version          = "15.3"
+  multi_az                = false
+  identifier              = "dev-rds-instance"
+  username                = "ApiMusicUser"
+  password                = "ApiMusicPassword"
+  instance_class          = "db.t2.micro"
+  allocated_storage       = 200
+  db_subnet_group_name    = aws_db_subnet_group.database_subnet_group.name
+  vpc_security_group_ids  = [aws_security_group.database_security_group.id]
+  availability_zone       = data.aws_availability_zones.available_zones.names[0]
+  db_name                 = "ApiMusicData"
+  skip_final_snapshot     = true
+}
+
+
+
