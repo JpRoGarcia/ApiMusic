@@ -156,11 +156,4 @@ resource "aws_db_instance" "db_instance" {
   db_name                 = "ApiMusicData"
   skip_final_snapshot     = true
 
-    # Cargar SQL después de crear la instancia
-  provisioner "local-exec" {
-    command = "psql -h ${aws_db_instance.db_instance.address} -U ${aws_db_instance.db_instance.username} -p ${aws_db_instance.db_instance.port} -d ${aws_db_instance.db_instance.name} < create_table.sql"
-  }
 }
-
-
-
