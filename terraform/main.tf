@@ -143,7 +143,7 @@ resource "aws_db_subnet_group" "database_subnet_group" {
 # create the rds instance
 resource "aws_db_instance" "db_instance" {
   engine                  = "postgres"
-  engine_version          = "15.3-R2"
+  engine_version          = "15.3"
   multi_az                = false
   identifier              = "dev-rds-instance"
   username                = "ApiMusicUser"
