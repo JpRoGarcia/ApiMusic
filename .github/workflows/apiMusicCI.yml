@@ -58,6 +58,7 @@ jobs:
           tags: ${{ secrets.DOCKER_USERNAME }}/appmusic:latest
 
   terraform:
+    needs: build
     runs-on: ubuntu-latest
     outputs:
       SERVER_PUBLIC_IP: ${{ steps.set-ip.outputs.instance_public_ip }}
