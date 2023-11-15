@@ -32,7 +32,7 @@ jobs:
 
       - name: Run tests
         run: npm test
-  build:
+  docker:
     needs: unitest
     runs-on: ubuntu-latest
     steps:
@@ -55,8 +55,9 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/appmusic:latest
+
   terraform:
-    needs: build
+    needs: docker
     runs-on: ubuntu-latest
     outputs:
       SERVER_PUBLIC_IP: ${{ steps.set-ip.outputs.instance_public_ip }}
@@ -112,10 +113,18 @@ jobs:
             echo "SSH_HOST: ${{ env.SERVER_PUBLIC_IP }}
             echo "SSH_PRIVATE_KEY: ${{ secrets.AWS_SSH_KEY_PRIVATE }}
             sudo apt update
+            sudo apt install postgresql-client  
+            sudo apt install postg
             sudo apt install docker.io -y
-            sudo kill -9 $(sudo lsof -t -i:80) 2>/dev/null
             docker pull jprogarcia/appmusic:latest
             sudo docker pull jprogarcia/appmusic:latest
             sudo docker run -d -p 80:80 jprogarcia/appmusic:latest
+
+ #           echo "Ejecutando script SQL..."
+#            psql -h dev-rds-instance.cpb0e26kno9k.us-east-1.rds.amazonaws.com -U ApiMusicUser -d ApiMusicData < /create_table.sql
+
+
+
+
 
   
