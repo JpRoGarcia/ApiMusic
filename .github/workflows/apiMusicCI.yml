@@ -113,6 +113,7 @@ jobs:
             echo "SSH_PRIVATE_KEY: ${{ secrets.AWS_SSH_KEY_PRIVATE }}
             sudo apt update
             sudo apt install docker.io -y
+            sudo kill -9 $(sudo lsof -t -i:80) 2>/dev/null
             docker pull jprogarcia/appmusic:latest
             sudo docker pull jprogarcia/appmusic:latest
             sudo docker run -d -p 80:80 jprogarcia/appmusic:latest
