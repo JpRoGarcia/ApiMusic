@@ -92,7 +92,7 @@ resource "aws_security_group" "maingroup" {
   ]
 
   tags = {
-    Name = "segurity group"
+    Name = "segurity group AWS"
   }
   
 }
@@ -148,6 +148,10 @@ resource "aws_db_instance" "db_instance" {
   vpc_security_group_ids  = [aws_security_group.maingroup.id]
   availability_zone       = data.aws_availability_zones.available_zones.names[0]
   db_name                 = "ApiMusicData"
+  publicly_accessible     = true
   skip_final_snapshot     = true
 
+    provisioner "local-exec" {
+    command = "psql -h ${aws_db_instance.db_instance.address} -U ${aws_db_instance.db_instance.username} -p ${aws_db_instance.db_instance.port} -d ${aws_db_instance.db_instance.name} < create_table.sql"
+  }
 }
