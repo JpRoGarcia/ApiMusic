@@ -145,7 +145,7 @@ resource "aws_db_instance" "db_instance" {
   instance_class          = "db.t3.micro"
   allocated_storage       = 200
   db_subnet_group_name    = aws_db_subnet_group.database_subnet_group.name
-  vpc_security_group_ids  = aws_security_group.maingroup.id
+  vpc_security_group_ids  = [aws_security_group.maingroup.id]
   availability_zone       = data.aws_availability_zones.available_zones.names[0]
   db_name                 = "ApiMusicData"
   skip_final_snapshot     = true
