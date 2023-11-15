@@ -11,7 +11,9 @@ const execute = async (sql) => {
       user: 'ApiMusicUser',
       password: 'ApiMusicPassword',
       database: 'ApiMusicData',
-      ssl: true,
+      ssl: {
+        rejectUnauthorized: false, // Permitir certificados autofirmados
+      },
       });
 
     await client.connect((err) => {
