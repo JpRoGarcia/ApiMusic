@@ -38,6 +38,34 @@ resource "aws_iam_instance_profile" "ec2-profile" {
 }
 
 resource "aws_security_group" "maingroup" {
+  name = "security_group"
+  description = "Security Group"
+
+  ingress = [
+      {
+        description      = ""
+        from_port        = 22
+        to_port          = 22
+        protocol         = "tcp"
+        cidr_blocks      = ["0.0.0.0/0", ]
+      },
+      {
+
+        description      = ""
+        from_port        = 80
+        to_port          = 80
+        protocol         = "tcp"
+        cidr_blocks      = ["0.0.0.0/0", ]
+      },
+      {
+      description = "Allow PostgreSQL connections from EC2 instances"
+      from_port = 5432
+      to_port = 5432
+      protocol = "tcp"
+      cidr_blocks      = ["0.0.0.0/0"]
+      }
+    ]
+
   egress = [
     {
       description      = ""
@@ -47,30 +75,11 @@ resource "aws_security_group" "maingroup" {
       cidr_blocks      = ["0.0.0.0/0"]
     }
   ]
-  ingress = [
-    {
-      description      = ""
-      from_port        = 22
-      to_port          = 22
-      protocol         = "tcp"
-      cidr_blocks      = ["0.0.0.0/0", ]
-    },
-    {
 
-      description      = ""
-      from_port        = 80
-      to_port          = 80
-      protocol         = "tcp"
-      cidr_blocks      = ["0.0.0.0/0", ]
-    },
-    {
-    description = "Allow PostgreSQL connections from EC2 instances"
-    from_port = 5432
-    to_port = 5432
-    protocol = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
-    }
-  ]
+  tags = {
+    Name = "segurity group"
+  }
+  
 }
 
 resource "aws_key_pair" "deployer" {

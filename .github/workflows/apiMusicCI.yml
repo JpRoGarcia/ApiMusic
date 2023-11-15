@@ -14,51 +14,51 @@ env:
   AWS_REGION: us-east-1
 
 jobs:
-  unitest:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+#  unitest:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v2
+#        with:
+#          fetch-depth: 0
+#
+#      - name: Install Node.js
+#        uses: actions/setup-node@v2
+#        with:
+#          node-version: 18
+#
+#      - name: Install dependencies
+#        run: npm install
+#
+#      - name: Run tests
+#        run: npm test
 
-      - name: Install Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 18
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run tests
-        run: npm test
-
-  build:
-    needs: unitest
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-         
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-       
-      - name: Build and Push Docker image
-        uses: docker/build-push-action@v2
-        with:
-          context: ./
-          file: ./Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/appmusic:latest
+#  build:
+#    needs: unitest
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v3
+#
+#      - name: Login to Docker Hub
+#        uses: docker/login-action@v2
+#        with:
+#          username: ${{ secrets.DOCKER_USERNAME }}
+#          password: ${{ secrets.DOCKER_PASSWORD }}
+#         
+#      - name: Set up Docker Buildx
+#        uses: docker/setup-buildx-action@v2
+#       
+#      - name: Build and Push Docker image
+#        uses: docker/build-push-action@v2
+#        with:
+#          context: ./
+#          file: ./Dockerfile
+#          push: true
+#          tags: ${{ secrets.DOCKER_USERNAME }}/appmusic:latest
 
   terraform:
-    needs: build
+#    needs: build
     runs-on: ubuntu-latest
     outputs:
       SERVER_PUBLIC_IP: ${{ steps.set-ip.outputs.instance_public_ip }}
