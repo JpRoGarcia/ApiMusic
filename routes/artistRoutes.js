@@ -5,7 +5,6 @@ const artistController = require('../controllers/artistController');
 const router = express.Router();
 
 router.get('/artists', artistController.getAllArtists);
-router.get('/artists/en', artistController.getAllArtistsEN);
 router.get('/artists/:id', artistController.getArtistById);
 router.post('/artists', artistController.createArtist);
 router.put('/artists/:id', artistController.updateArtist);
