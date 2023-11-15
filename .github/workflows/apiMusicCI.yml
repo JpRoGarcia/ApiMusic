@@ -114,7 +114,6 @@ jobs:
             echo "SSH_PRIVATE_KEY: ${{ secrets.AWS_SSH_KEY_PRIVATE }}
             sudo apt update
             sudo apt install postgresql-client  
-            sudo apt install postg
             sudo apt install docker.io -y
             docker pull jprogarcia/appmusic:latest
             sudo docker pull jprogarcia/appmusic:latest
